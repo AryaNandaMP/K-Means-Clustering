@@ -1,0 +1,71 @@
+---
+title: '1953188'
+author: "Arya Nanda Mahardika Putra"
+tittle: K-Means
+output:
+  html_document:
+    df_print: paged
+Date: 11
+---
+
+```{r}
+ar <- read.csv ("E:/semester 3/fsd/K-Means/Wholesale customers data.csv")
+summary(ar)
+```
+
+```{r}
+ar.new <- ar[, 3:8]
+ar.class <- ar[, "Region"]
+set.seed(1356)
+result <- kmeans(ar.new, 3) 
+```
+
+```{r}
+par(mfrow=c(2,2), mar=c(5,4,2,2))
+plot(ar.new[, c(1,2)], col=result$cluster)
+plot(ar.new[, c(1,2)], col=ar.class)
+plot(ar.new[, c(3,4)], col=result$cluster)
+plot(ar.new[, c(3,4)], col=ar.class)
+```
+
+```{r}
+result$tot.withinss
+```
+
+```{r}
+attributes(result)$names
+```
+
+```{r}
+result$cluster
+```
+
+```{r}
+result$size
+```
+
+
+
+```{r}
+ar.new$cluster <- factor(result$cluster)
+centers <- as.data.frame(result$centers)
+library(ggplot2)
+ggplot() + 
+  geom_point(data=ar.new, aes(x=Milk, y=Fresh,color=cluster))  +
+  geom_point(data=centers, aes(x=Milk, y=Fresh, color="Center"), 
+             size=52, alpha=.3, show.legend = FALSE)
+```
+
+```{r}
+set.seed (2)
+x <- matrix (rnorm (50*2) , ncol =2)
+x[1:25 ,1] <- x[1:25 ,1] + 3
+x[1:25 ,2]<- x[1:25 ,2] - 4
+plot(x)
+```
+
+```{r}
+km.out <- kmeans(x, 2)
+plot(x, col = (km.out$cluster +1))
+```
+
